@@ -18,6 +18,12 @@ class Garage
     #[ORM\OneToMany(mappedBy: 'garage', targetEntity: Car::class, orphanRemoval: true)]
     private Collection $garage;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    #[ORM\OneToOne(mappedBy: 'pilote', cascade: ['persist', 'remove'])]
+    private ?Pilote $pilote = null;
+
     public function __construct()
     {
         $this->garage = new ArrayCollection();
@@ -36,24 +42,53 @@ class Garage
         return $this->garage;
     }
 
-    public function addGarage(Car $garage): self
+    public function addGarage(Car $car): self
     {
-        if (!$this->garage->contains($garage)) {
-            $this->garage->add($garage);
-            $garage->setGarage($this);
+        if (!$this->garage->contains($car)) {
+            $this->garage->add($car);
+            $car->setGarage($this);
         }
 
         return $this;
     }
 
-    public function removeGarage(Car $garage): self
+    public function removeGarage(Car $car): self
     {
-        if ($this->garage->removeElement($garage)) {
+        if ($this->garage->removeElement($car)) {
             // set the owning side to null (unless already changed)
-            if ($garage->getGarage() === $this) {
-                $garage->setGarage(null);
+            if ($car->getGarage() === $this) {
+                $car->setGarage(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getPilote(): ?Pilote
+    {
+        return $this->pilote;
+    }
+
+    public function setPilote(Pilote $pilote): self
+    {
+        // set the owning side of the relation if necessary
+        if ($pilote->getPilote() !== $this) {
+            $pilote->setPilote($this);
+        }
+
+        $this->pilote = $pilote;
 
         return $this;
     }

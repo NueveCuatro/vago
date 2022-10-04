@@ -14,25 +14,36 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $garage = new Garage();
-        $manager->persist($garage);
+        //elliot's garage
 
+        $garage = new Garage();
+        $garage->setName("elliot's garage");
+        $manager->persist($garage);
         $manager->flush();
-        // Une fois l'instance de Region sauvée en base de données,
-        // elle dispose d'un identifiant généré par Doctrine, et peut
-        // donc être sauvegardée comme future référence.
         $this->addReference(self::ELLIOT_GARAGE, $garage);
 
+        $car = new Car();
+        $car->setBrand("mercedes");
+        $car->setModel("gle");
+        $car->setColor("black");
+        $car->setGarage($this->getReference(self::ELLIOT_GARAGE));   
+        $manager->persist($car);
+        $manager->flush();
+
+        //baba's garage 
+
+        $garage = new Garage();
+        $garage->setName("baba's garage");
+        $manager->persist($garage);
+        $manager->flush();
+        $this->addReference(self::ELLIOT_GARAGE, $garage);
 
         $car = new Car();
-        $car->setGarage($garage);
-        //$room->addRegion($region);
-        // On peut plutôt faire une référence explicite à la référence
-        // enregistrée précédamment, ce qui permet d'éviter de se
-        // tromper d'instance de Region :
-        $car->$garage->addGarage($this->getReference(self::ELLIOT_GARAGE));   
+        $car->setBrand("porsche");
+        $car->setModel("918 spider");
+        $car->setColor("grey");
+        $car->setGarage($this->getReference(self::ELLIOT_GARAGE));   
         $manager->persist($car);
-
         $manager->flush();
     }
 }
