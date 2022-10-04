@@ -20,7 +20,7 @@ class AppFixtures extends Fixture
         $garage->setName("elliot's garage");
         $manager->persist($garage);
         $manager->flush();
-        $this->addReference(self::ELLIOT_GARAGE, $garage);
+        $this->setReference(self::ELLIOT_GARAGE, $garage);
 
         $car = new Car();
         $car->setBrand("mercedes");
@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
         $garage->setName("baba's garage");
         $manager->persist($garage);
         $manager->flush();
-        $this->addReference(self::ELLIOT_GARAGE, $garage);
+        $this->setReference(self::ELLIOT_GARAGE, $garage);
 
         $car = new Car();
         $car->setBrand("porsche");

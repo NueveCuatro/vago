@@ -10,18 +10,10 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class GarageController extends AbstractController
 {
-    #[Route('/garage', name: 'app_garage')]
-    public function index(): Response
-    {
-        return $this->render('garage/index.html.twig', [
-            'controller_name' => 'GarageController',
-        ]);
-    }
-
     /**
      * liste des garages
      * 
-     * @route("/liste, name = 'Garage_list, methods = "GET") 
+     * @Route("/liste", name = "Garage_list", methods = "GET") 
      */
     public function listGarage(ManagerRegistry $doctrine)
     {
@@ -40,7 +32,7 @@ class GarageController extends AbstractController
         $garages = $entityManager->getRepository(Garage::class)->findAll();
         foreach($garages as $garage) {
            $htmlpage .= '<li>
-            <a href="/garage/'.$garage->getid().'">'.$garage->getTitle().'</a></li>';
+            <a href="/garage/'.$garage->getid().'">'.$garage->getName().'</a></li>';
          }
         $htmlpage .= '</ul>';
 
@@ -51,6 +43,42 @@ class GarageController extends AbstractController
             Response::HTTP_OK,
             array('content-type' => 'text/html')
             );
+    }
+    /**
+     * Show a garage
+     * 
+     * @Route("/garage/{id}", name="garage_show", requirements={"id"="\d+"})
+     *    note that the id must be an integer, above
+     *    
+     * @param Integer $id
+     */
+    public function show(ManagerRegistry $doctrine, $id)
+    {
+        $garageRepo = $doctrine->getRepository(Garage::class);
+        $garage = $garageRepo->find($id);
+
+        if (!$garage) {
+            throw $this->createNotFoundException('The garage does not exist');
+        }
+
+        $res = '<!DOCTYPE html>
+        <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>todo n° '.$garage->getId().' details</title>
+            </head>
+            <body>
+                <h2>Todo Details :</h2>
+                <ul>
+                <dl>';
+        
+        $res .= '<dt>TODO</dt><dd>' . $garage->getName() . '</dd>';
+        $res .= '<dt>TODO</dt><dd>' . $garage->getPilote() . '</dd>';
+        $res .= '<dl/>';
+        $res .= '<ul/>';
+        $res .= '<p/><a href="' . $this->generateUrl('garage_index') . '">Back</a>';
+
+        return new Response('<html><body>'. $res . '</body></html>');
     }
 
 }
