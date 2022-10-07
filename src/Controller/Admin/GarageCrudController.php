@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 class GarageCrudController extends AbstractCrudController
 {

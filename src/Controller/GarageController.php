@@ -12,14 +12,8 @@ class GarageController extends AbstractController
 {
 
 
-    /**
-     * @Route("/liste", name = "garage_index")
-     */
-    public function index(){
-
-    }
-
-
+    
+    
     /**
      * liste des garages
      * 
@@ -28,15 +22,15 @@ class GarageController extends AbstractController
     public function listGarage(ManagerRegistry $doctrine)
     {
         $htmlpage = '<!DOCTYPE html>
-                        <html>
-                            <head>
-                                <meta charset="UTF-8">
-                                <title>garages list!</title>
-                            </head>
-                            <body>
-                                <h1>garages list</h1>
-                                <p>Here are all your garages:</p>
-                                <ul>';
+        <html>
+        <head>
+        <meta charset="UTF-8">
+        <title>garages list!</title>
+        </head>
+        <body>
+        <h1>garages list</h1>
+        <p>Here are all your garages:</p>
+        <ul>';
         
         $entityManager= $doctrine->getManager();
         $garages = $entityManager->getRepository(Garage::class)->findAll();
@@ -47,26 +41,36 @@ class GarageController extends AbstractController
                 ['id' => $garage->getId()]);
                 
                 $htmlpage .= '<li>
-               <a href="'.$url.'">'.$garage->getName().'</a></li>';
+                <a href="'.$url.'">'.$garage->getName().'</a></li>';
             }
-
-        $htmlpage .= '</ul>';
-        $htmlpage .= '</body></html>';
-        
-        return new Response(
-            $htmlpage,
-            Response::HTTP_OK,
-            array('content-type' => 'text/html')
+            
+            $htmlpage .= '</ul>';
+            $htmlpage .= '</body></html>';
+            
+            return new Response(
+                $htmlpage,
+                Response::HTTP_OK,
+                array('content-type' => 'text/html')
             );
-    }
-    /**
-     * Show a garage
-     * 
-     * @Route("/garage/{id}", name="garage_show", requirements={"id"="\d+"})
-     *    note that the id must be an integer, above
-     *    
-     * @param Integer $id
-     */
+        }
+
+        
+        /**
+         * @Route("/liste", name = "garage_index")
+         */
+        public function index(){
+    
+        }
+
+
+        /**
+         * Show a garage
+         * 
+         * @Route("/garage/{id}", name="garage_show", requirements={"id"="\d+"})
+         *    note that the id must be an integer, above
+         *    
+         * @param Integer $id
+         */
     public function show(ManagerRegistry $doctrine, $id)
     {
         $garageRepo = $doctrine->getRepository(Garage::class);
