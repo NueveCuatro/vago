@@ -45,5 +45,14 @@ class AppFixtures extends Fixture
         $car->setGarage($this->getReference(self::ELLIOT_GARAGE));   
         $manager->persist($car);
         $manager->flush();
+
+        //mateo's garage
+
+        $garage = new Garage();
+        $garage->setName("mateo's garage");
+        $manager->persist($garage);
+        $manager->flush();
+        $this->setReference(self::ELLIOT_GARAGE, $garage);
+
     }
 }

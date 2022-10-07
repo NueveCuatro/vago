@@ -18,24 +18,29 @@ class GarageController extends AbstractController
     public function listGarage(ManagerRegistry $doctrine)
     {
         $htmlpage = '<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>garages list!</title>
-    </head>
-    <body>
-        <h1>garages list</h1>
-        <p>Here are all your garages:</p>
-        <ul>';
+                        <html>
+                            <head>
+                                <meta charset="UTF-8">
+                                <title>garages list!</title>
+                            </head>
+                            <body>
+                                <h1>garages list</h1>
+                                <p>Here are all your garages:</p>
+                                <ul>';
         
         $entityManager= $doctrine->getManager();
         $garages = $entityManager->getRepository(Garage::class)->findAll();
         foreach($garages as $garage) {
-           $htmlpage .= '<li>
-            <a href="/garage/'.$garage->getid().'">'.$garage->getName().'</a></li>';
-         }
+            //<a href="/garage/'.$garage->getid().'">'.$garage->getName().'</a></li>';
+            $url = $this->generateUrl(
+                'garage_show',
+                ['id' => $garage->getId()]);
+                
+                $htmlpage .= '<li>
+               <a href="'.$url.'">'.$garage->getName().'</a></li>';
+            }
+            
         $htmlpage .= '</ul>';
-
         $htmlpage .= '</body></html>';
         
         return new Response(
