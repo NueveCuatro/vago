@@ -26,9 +26,9 @@ class AppFixtures extends Fixture
         $car->setBrand("mercedes");
         $car->setModel("gle");
         $car->setColor("black");
-        $car->setGarage($this->getReference(self::ELLIOT_GARAGE));   
         $manager->persist($car);
         $manager->flush();
+        $car->setGarage($this->getReference(self::ELLIOT_GARAGE));   
 
         //baba's garage 
 
@@ -42,9 +42,9 @@ class AppFixtures extends Fixture
         $car->setBrand("porsche");
         $car->setModel("918 spider");
         $car->setColor("grey");
-        $car->setGarage($this->getReference(self::ELLIOT_GARAGE));   
         $manager->persist($car);
         $manager->flush();
+        $car->setGarage($this->getReference(self::ELLIOT_GARAGE));   
 
         //mateo's garage
 

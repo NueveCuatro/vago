@@ -10,6 +10,16 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class GarageController extends AbstractController
 {
+
+
+    /**
+     * @Route("/liste", name = "garage_index")
+     */
+    public function index(){
+
+    }
+
+
     /**
      * liste des garages
      * 
@@ -39,7 +49,7 @@ class GarageController extends AbstractController
                 $htmlpage .= '<li>
                <a href="'.$url.'">'.$garage->getName().'</a></li>';
             }
-            
+
         $htmlpage .= '</ul>';
         $htmlpage .= '</body></html>';
         
@@ -70,15 +80,15 @@ class GarageController extends AbstractController
         <html>
             <head>
                 <meta charset="UTF-8">
-                <title>todo n° '.$garage->getId().' details</title>
+                <title>garage n° '.$garage->getId().'</title>
             </head>
             <body>
-                <h2>Todo Details :</h2>
+                <h2>garage Details :</h2>
                 <ul>
                 <dl>';
         
-        $res .= '<dt>TODO</dt><dd>' . $garage->getName() . '</dd>';
-        $res .= '<dt>TODO</dt><dd>' . $garage->getPilote() . '</dd>';
+        $res .= '<dt>garage</dt><dd>' . $garage->getName() . '</dd>';
+        $res .= '<dt>garage</dt><dd>' . $garage->getPilote() . '</dd>';
         $res .= '<dl/>';
         $res .= '<ul/>';
         $res .= '<p/><a href="' . $this->generateUrl('garage_index') . '">Back</a>';
