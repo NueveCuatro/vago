@@ -19,7 +19,9 @@ class GarageCrudController extends AbstractCrudController
     public static function getEntityFqcn(): string
     {
         return Garage::class;
+        
     }
+    
 
     /*
     public function configureFields(string $pageName): iterable

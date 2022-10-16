@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CarRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CarRepository::class)]
@@ -17,14 +19,13 @@ class Car
     #[ORM\JoinColumn(nullable: false)]
     private ?Garage $garage = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $brand = null;
+    #[ORM\ManyToMany(targetEntity: Brand::class, inversedBy: 'cars')]
+    private Collection $brand;
 
-    #[ORM\Column(length: 255)]
-    private ?string $color = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $model = null;
+    public function __construct()
+    {
+        $this->brand = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -43,38 +44,26 @@ class Car
         return $this;
     }
 
-    public function getBrand(): ?string
+    /**
+     * @return Collection<int, Brand>
+     */
+    public function getBrand(): Collection
     {
         return $this->brand;
     }
 
-    public function setBrand(string $brand): self
+    public function addBrand(Brand $brand): self
     {
-        $this->brand = $brand;
+        if (!$this->brand->contains($brand)) {
+            $this->brand->add($brand);
+        }
 
         return $this;
     }
 
-    public function getColor(): ?string
+    public function removeBrand(Brand $brand): self
     {
-        return $this->color;
-    }
-
-    public function setColor(string $color): self
-    {
-        $this->color = $color;
-
-        return $this;
-    }
-
-    public function getModel(): ?string
-    {
-        return $this->model;
-    }
-
-    public function setModel(string $model): self
-    {
-        $this->model = $model;
+        $this->brand->removeElement($brand);
 
         return $this;
     }
