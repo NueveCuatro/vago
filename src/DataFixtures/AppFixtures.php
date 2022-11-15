@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
         $manager->flush();
         $this->setReference(self::ELLIOT_GARAGE, $garage);
         
-        //====
+        //====1rst car
         $brand = new Brand();
         $brand -> setParent($brands)
                 -> setName("lamborgini");
@@ -39,7 +39,21 @@ class AppFixtures extends Fixture
         $manager->persist($brand);
         $manager->flush();
         
-        //====
+        $car = new Car();
+        $car->setGarage($this->getReference(self::ELLIOT_GARAGE));
+        $car->addBrand($brand);
+
+        $manager->persist($car);
+        $manager->flush();
+
+        //====2nd car
+        $brand = new Brand();
+        $brand -> setParent($brands)
+                -> setName("nissan almera");
+
+        $manager->persist($brand);
+        $manager->flush();
+
         $car = new Car();
         $car->setGarage($this->getReference(self::ELLIOT_GARAGE));
         $car->addBrand($brand);

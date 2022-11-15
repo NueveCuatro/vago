@@ -1,0 +1,7 @@
+bootstrap_menu:
+  menus:
+    main:
+      items:
+        garages:
+          label: 'garages'
+          route: 'garage_list'

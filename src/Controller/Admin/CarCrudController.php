@@ -6,6 +6,8 @@ use App\Entity\Car;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use \EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CarCrudController extends AbstractCrudController
 {
@@ -22,14 +24,12 @@ class CarCrudController extends AbstractCrudController
 
     */
 
-    /*
+    
     public function configureFields(string $pageName): iterable
     {
         return [
             IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            TextField::new('garage.name'),
         ];
     }
-    */
 }
