@@ -23,6 +23,9 @@ class Pilote
     #[ORM\JoinColumn(nullable: false)]
     private ?Garage $pilote = null;
 
+    #[ORM\OneToOne(mappedBy: 'createur', cascade: ['persist', 'remove'])]
+    private ?Gallery $gallery = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,5 +65,26 @@ class Pilote
         $this->pilote = $pilote;
 
         return $this;
+    }
+
+    public function getGallery(): ?Gallery
+    {
+        return $this->gallery;
+    }
+
+    public function setGallery(Gallery $gallery): self
+    {
+        // set the owning side of the relation if necessary
+        if ($gallery->getCreateur() !== $this) {
+            $gallery->setCreateur($this);
+        }
+
+        $this->gallery = $gallery;
+
+        return $this;
+    }
+
+    public function __toString() {
+        return $this->name;
     }
 }

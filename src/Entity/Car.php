@@ -22,9 +22,16 @@ class Car
     #[ORM\ManyToMany(targetEntity: Brand::class, inversedBy: 'cars')]
     private Collection $brand;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    #[ORM\ManyToMany(targetEntity: Gallery::class, mappedBy: 'cars')]
+    private Collection $galleries;
+
     public function __construct()
     {
         $this->brand = new ArrayCollection();
+        $this->galleries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,6 +71,49 @@ class Car
     public function removeBrand(Brand $brand): self
     {
         $this->brand->removeElement($brand);
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function __toString() {
+        return $this->name;
+    }
+
+    /**
+     * @return Collection<int, Gallery>
+     */
+    public function getGalleries(): Collection
+    {
+        return $this->galleries;
+    }
+
+    public function addGallery(Gallery $gallery): self
+    {
+        if (!$this->galleries->contains($gallery)) {
+            $this->galleries->add($gallery);
+            $gallery->addCar($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGallery(Gallery $gallery): self
+    {
+        if ($this->galleries->removeElement($gallery)) {
+            $gallery->removeCar($this);
+        }
 
         return $this;
     }
