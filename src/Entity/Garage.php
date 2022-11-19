@@ -15,53 +15,23 @@ class Garage
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy: 'garage', targetEntity: Car::class, orphanRemoval: true)]
-    private Collection $garage;
-
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToOne(mappedBy: 'pilote', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'garage', cascade: ['persist', 'remove'])]
     private ?Pilote $pilote = null;
+
+    #[ORM\OneToMany(mappedBy: 'garage', targetEntity: Car::class, orphanRemoval: true)]
+    private Collection $cars;
 
     public function __construct()
     {
-        $this->garage = new ArrayCollection();
+        $this->cars = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection<int, Car>
-     */
-    public function getGarage(): Collection
-    {
-        return $this->garage;
-    }
-
-    public function addGarage(Car $car): self
-    {
-        if (!$this->garage->contains($car)) {
-            $this->garage->add($car);
-            $car->setGarage($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGarage(Car $car): self
-    {
-        if ($this->garage->removeElement($car)) {
-            // set the owning side to null (unless already changed)
-            if ($car->getGarage() === $this) {
-                $car->setGarage(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -84,12 +54,46 @@ class Garage
     public function setPilote(Pilote $pilote): self
     {
         // set the owning side of the relation if necessary
-        if ($pilote->getPilote() !== $this) {
-            $pilote->setPilote($this);
+        if ($pilote->getGarage() !== $this) {
+            $pilote->setGarage($this);
         }
 
         $this->pilote = $pilote;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Car>
+     */
+    public function getCars(): Collection
+    {
+        return $this->cars;
+    }
+
+    public function addCar(Car $car): self
+    {
+        if (!$this->cars->contains($car)) {
+            $this->cars->add($car);
+            $car->setGarage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCar(Car $car): self
+    {
+        if ($this->cars->removeElement($car)) {
+            // set the owning side to null (unless already changed)
+            if ($car->getGarage() === $this) {
+                $car->setGarage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString() {
+        return $this->name;
     }
 }

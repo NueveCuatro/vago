@@ -15,10 +15,6 @@ class Car
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'garage')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Garage $garage = null;
-
     #[ORM\ManyToMany(targetEntity: Brand::class, inversedBy: 'cars')]
     private Collection $brand;
 
@@ -27,6 +23,10 @@ class Car
 
     #[ORM\ManyToMany(targetEntity: Gallery::class, mappedBy: 'cars')]
     private Collection $galleries;
+
+    #[ORM\ManyToOne(inversedBy: 'cars')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Garage $garage = null;
 
     public function __construct()
     {
@@ -37,18 +37,6 @@ class Car
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getGarage(): ?Garage
-    {
-        return $this->garage;
-    }
-
-    public function setGarage(?Garage $garage): self
-    {
-        $this->garage = $garage;
-
-        return $this;
     }
 
     /**
@@ -114,6 +102,18 @@ class Car
         if ($this->galleries->removeElement($gallery)) {
             $gallery->removeCar($this);
         }
+
+        return $this;
+    }
+
+    public function getGarage(): ?Garage
+    {
+        return $this->garage;
+    }
+
+    public function setGarage(?Garage $garage): self
+    {
+        $this->garage = $garage;
 
         return $this;
     }

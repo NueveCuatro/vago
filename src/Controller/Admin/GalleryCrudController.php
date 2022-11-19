@@ -14,7 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Controller\Admin\QueryBuilder;
+use Doctrine\DBAL\Query\QueryBuilder;
 
 class GalleryCrudController extends AbstractCrudController
 {
@@ -44,7 +44,7 @@ class GalleryCrudController extends AbstractCrudController
         // Ajout possible seulement pour des [objets] qui
         // appartiennent même propriétaire de l'garage
         // que le creator$createur de la Gallery
-        ->setQueryBuilder(
+        /*->setQueryBuilder(
             function (QueryBuilder $queryBuilder) {
             // récupération de l'instance courante de Gallery
             $currentGallery = $this->getContext()->getEntity()->getInstance();
@@ -57,7 +57,7 @@ class GalleryCrudController extends AbstractCrudController
                 ->setParameter('member_id', $memberId);    
             return $queryBuilder;
             }
-           ),
+           ),*/
         ];
     }
 }

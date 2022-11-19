@@ -20,11 +20,15 @@ class Pilote
     private ?string $description = null;
 
     #[ORM\OneToOne(inversedBy: 'pilote', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Garage $pilote = null;
 
     #[ORM\OneToOne(mappedBy: 'createur', cascade: ['persist', 'remove'])]
     private ?Gallery $gallery = null;
+
+    #[ORM\OneToOne(inversedBy: 'pilote', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Garage $garage = null;
 
     public function getId(): ?int
     {
@@ -86,5 +90,17 @@ class Pilote
 
     public function __toString() {
         return $this->name;
+    }
+
+    public function getGarage(): ?Garage
+    {
+        return $this->garage;
+    }
+
+    public function setGarage(Garage $garage): self
+    {
+        $this->garage = $garage;
+
+        return $this;
     }
 }

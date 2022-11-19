@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Garage index{% endblock %}
+{% block title %}Brand index{% endblock %}
 
 {% block body %}
-    <h1>Garage index</h1>
+    <h1>Brand index</h1>
 
     <table class="table">
         <thead>
@@ -14,13 +14,13 @@
             </tr>
         </thead>
         <tbody>
-        {% for garage in garages %}
+        {% for brand in brands %}
             <tr>
-                <td>{{ garage.id }}</td>
-                <td>{{ garage.name }}</td>
+                <td>{{ brand.id }}</td>
+                <td>{{ brand.name }}</td>
                 <td>
-                    <a href="{{ path('app_garage_show', {'id': garage.id}) }}">show</a>
-                    <a href="{{ path('app_garage_edit', {'id': garage.id}) }}">edit</a>
+                    <a href="{{ path('app_brand_show', {'id': brand.id}) }}">show</a>
+                    <a href="{{ path('app_brand_edit', {'id': brand.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -31,5 +31,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_garage_new') }}">Create new</a>
+    <a href="{{ path('app_brand_new') }}">Create new</a>
 {% endblock %}

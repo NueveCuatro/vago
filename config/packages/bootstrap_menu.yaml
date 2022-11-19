@@ -3,5 +3,21 @@ bootstrap_menu:
     main:
       items:
         garages:
-          label: 'garages'
-          route: 'garage_list'
+          label: 'garages index'
+          route: 'app_garage_index'
+        
+        gallery:
+          label: 'gallery index'
+          route: 'app_gallery_index'
+
+        car: 
+          label: 'car index'
+          route: 'app_car_index'
+        
+        pilote:
+          label: 'pilote index'
+          route: 'app_pilote_index'
+
+        brand:
+          label: 'brands'
+          route: 'app_brand_index'

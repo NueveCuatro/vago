@@ -3,55 +3,76 @@
 namespace App\Controller;
 
 use App\Entity\Garage;
-use App\Entity\Brand;
+use App\Form\GarageType;
+use App\Repository\GarageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Persistence\ManagerRegistry;
 
+#[Route('/garage')]
 class GarageController extends AbstractController
 {
-
-    /**
-     * home page
-     * 
-     * @Route("/", name = "home", methods = "GET")
-     */
-    public function home(){
-        return $this->render("garage/home.html.twig");
-    }
-    
-    
-    /**
-     * liste des garages
-     * 
-     * @Route("/garage/list", name = "garage_list", methods = "GET") 
-     */
-    public function listGarage(ManagerRegistry $doctrine)
+    #[Route('/', name: 'app_garage_index', methods: ['GET'])]
+    public function index(GarageRepository $garageRepository): Response
     {
-        $entityManager= $doctrine->getManager();
-        $garages = $entityManager->getRepository(Garage::class)->findAll();
-        
-        dump($garages);
-
-        return $this->render("garage/index.html.twig",
-        ["garages" => $garages]);
-        }
-
-
-        /**
-         * Show a garage
-         * 
-         * @Route("/garage/{id}", name="garage_show", requirements={"id"="\d+"})
-         *    note that the id must be an integer, above
-         *    
-         * @param Integer $id
-         */
-    public function showGarage(Garage $garage, Brand $brand)
-    {
-        return $this->render("garage/show_garage.html.twig",[
-            "garage" => $garage,
+        return $this->render('garage/index.html.twig', [
+            'garages' => $garageRepository->findAll(),
         ]);
     }
 
+    #[Route('/new', name: 'app_garage_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, GarageRepository $garageRepository): Response
+    {
+        $garage = new Garage();
+        $form = $this->createForm(GarageType::class, $garage);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $garageRepository->add($garage, true);
+
+            return $this->redirectToRoute('app_garage_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('garage/new.html.twig', [
+            'garage' => $garage,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_garage_show', methods: ['GET'])]
+    public function show(Garage $garage): Response
+    {
+        return $this->render('garage/show.html.twig', [
+            'garage' => $garage,
+        ]);
+    }
+
+    #[Route('/{id}/edit', name: 'app_garage_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Garage $garage, GarageRepository $garageRepository): Response
+    {
+        $form = $this->createForm(GarageType::class, $garage);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $garageRepository->add($garage, true);
+
+            return $this->redirectToRoute('app_garage_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('garage/edit.html.twig', [
+            'garage' => $garage,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_garage_delete', methods: ['POST'])]
+    public function delete(Request $request, Garage $garage, GarageRepository $garageRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$garage->getId(), $request->request->get('_token'))) {
+            $garageRepository->remove($garage, true);
+        }
+
+        return $this->redirectToRoute('app_garage_index', [], Response::HTTP_SEE_OTHER);
+    }
 }
